@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Text Analyzer</h1>
+        <textarea id="textInput" rows="8" placeholder="Masukkan teks..."></textarea>
+        <button onclick="analyzeText()">Analisis</button>
+        <div id="result" class="result">
+            <p>Kata: <span id="wordCount">-</span></p>
+            <p>Karakter: <span id="charCount">-</span></p>
+            <p>Kalimat: <span id="sentenceCount">-</span></p>
+        </div>
+    </div>
+    <script>
+        async function analyzeText() {
+            const text = document.getElementById('textInput').value;
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            const data = await response.json();
+            document.getElementById('wordCount').textContent = data.words;
+            document.getElementById('charCount').textContent = data.characters;
+            document.getElementById('sentenceCount').textContent = data.sentences;
+        }
+    </script>
+</body>
+</html>
